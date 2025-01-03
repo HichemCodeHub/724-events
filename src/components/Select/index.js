@@ -15,11 +15,14 @@ const Select = ({
 }) => {
   const [value, setValue] = useState();
   const [collapsed, setCollapsed] = useState(true);
+
+  // Modification : On passe maintenant la valeur sélectionnée à la fonction onChange
   const changeValue = (newValue) => {
-    onChange();
+    onChange(newValue); // Passer la nouvelle valeur sélectionnée à onChange
     setValue(newValue);
-    setCollapsed(newValue);
+    setCollapsed(newValue); // Ferme ou ouvre le menu selon la sélection
   };
+
   return (
     <div className={`SelectContainer ${type}`} data-testid="select-testid">
       {label && <div className="label">{label}</div>}
@@ -88,7 +91,7 @@ Select.propTypes = {
   titleEmpty: PropTypes.bool,
   label: PropTypes.string,
   type: PropTypes.string,
-}
+};
 
 Select.defaultProps = {
   onChange: () => null,
@@ -96,6 +99,6 @@ Select.defaultProps = {
   label: "",
   type: "normal",
   name: "select",
-}
+};
 
 export default Select;
