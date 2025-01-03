@@ -13,15 +13,26 @@ import Modal from "../../containers/Modal";
 import { useData } from "../../contexts/DataContext";
 
 const Page = () => {
-  const { last } = useData();
-  
+  const { data } = useData();
+
+  // Créer une copie des événements pour éviter de modifier directement les données d'origine
+  const copyData = data?.events ? [...data.events] : [];
+
+  // Trier les événements par date, de la plus récente à la plus ancienne
+  const dataTried = copyData.sort(
+    (a, b) => new Date(b.date) - new Date(a.date)
+  );
+
+  // Le dernier événement trié (le plus récent)
+  const last = dataTried[0];
+
   return (
     <>
       <header>
         <Menu />
       </header>
       <main>
-        <section id="nos-services" className="SliderContainer">
+        <section className="SliderContainer">
           <Slider />
         </section>
         <section id="nos-services" className="ServicesContainer">
@@ -33,23 +44,23 @@ const Page = () => {
               Une soirée d’entreprise vous permet de réunir vos équipes pour un
               moment convivial afin de valoriser votre société en projetant une
               image dynamique. Nous vous proposons d’organiser pour vous vos
-              diners et soirée d’entreprise.
+              diners et soirée d’entreprise
             </ServiceCard>
             <ServiceCard imageSrc="/images/hall-expo.png">
               <h3>Conférences</h3>
-              724 events vous propose d’organiser votre évènement, quelle que soit
-              sa taille, en s’adaptant à votre demande et à vos demandes. En tant
-              que spécialistes de l’évènementiel, nous saurons trouver le lieu
-              parfait ainsi que des solutions inédites pour capter votre audience
-              et faire de cet évènement un succès.
+              724 events vous propose d’organiser votre évènement, quelle que
+              soit sa taille, en s’adaptant à votre demande et à vos demandes.
+              En tant que spécialistes de l’évènementiel, nous saurons trouver
+              le lieu parfait ainsi que des solutions inédites pour capter votre
+              audience et faire de cet évènement un succès
             </ServiceCard>
             <ServiceCard imageSrc="/images/sophia-sideri-LFXMtUuAKK8-unsplash1.png">
               <h3>Experience digitale</h3>
               Notre agence experte en contenus immersifs offre des services de
-              conseil aux entreprises, pour l’utilisation de la réalité virtuelle,
-              de la réalité augmentée et de la réalité mixte de l’animation
-              événementielle, à la veille technologique jusqu’au développement de
-              module de formation innovant.
+              conseil aux entreprises, pour l’utilisation de la réalité
+              virtuelle, de la réalité augmentée et de la réalité mixte de
+              l’animation événementielle, à la veille technologique jusqu’au
+              développement de module de formation innovant
             </ServiceCard>
           </div>
         </section>
@@ -59,7 +70,7 @@ const Page = () => {
         </section>
         <section id="notre-equipe" className="PeoplesContainer">
           <h2 className="Title">Notre équipe</h2>
-          <p>Une équipe d’experts dédiés à l’organisation de vos événements</p>
+          <p>Une équipe d’experts dédiés à l’ogranisation de vos événements</p>
           <div className="ListContainer">
             <PeopleCard
               imageSrc="/images/stephanie-liverani-Zz5LQe-VSMY-unsplash.png"
@@ -101,16 +112,13 @@ const Page = () => {
                 <div>Message envoyé !</div>
                 <p>
                   Merci pour votre message nous tâcherons de vous répondre dans
-                  les plus brefs délais.
+                  les plus brefs délais
                 </p>
               </div>
             }
           >
             {({ setIsOpened }) => (
-              <Form
-                onSuccess={() => setIsOpened(true)}
-                onError={() => null}
-              />
+              <Form onSuccess={() => setIsOpened(true)} onError={() => null} />
             )}
           </Modal>
         </div>
@@ -118,13 +126,16 @@ const Page = () => {
       <footer className="row">
         <div className="col presta">
           <h3>Notre dernière prestation</h3>
-          <EventCard
-            imageSrc={last?.cover || "/default-image.png"}  // Utilisation d'une image par défaut si last.cover est indéfini
-            title={last?.title || "Titre par défaut"} // Utilisation d'un titre par défaut si last.title est indéfini
-            date={new Date(last?.date)}
-            small
-            label="boom"
-          />
+          {/* Affichage conditionnel de l'événement le plus récent */}
+          {last && last.title && (
+            <EventCard
+              imageSrc={last.cover || "/default-image.png"} // Si last.cover est indéfini, une image par défaut sera utilisée
+              title={last.title || "Titre par défaut"} // Si last.title est indéfini, un titre par défaut sera utilisé
+              date={new Date(last.date)} // La date de l'événement
+              small // Classe pour ajuster la taille de l'image
+              label={last.type || "Type d'événement"} // Utilisation d'un label par défaut si last.type est indéfini
+            />
+          )}
         </div>
         <div className="col contact">
           <h3>Contactez-nous</h3>
@@ -150,9 +161,9 @@ const Page = () => {
           <Logo size="large" />
           <p>
             Une agence événementielle propose des prestations de service
-            spécialisées dans la conception et l&apos;organisation de divers événements
-            tels que des événements festifs, des manifestations sportives et
-            culturelles, des événements professionnels.
+            spécialisées dans la conception et l&apos;organisation de divers
+            événements tels que des événements festifs, des manifestations
+            sportives et culturelles, des événements professionnels
           </p>
         </div>
       </footer>
@@ -161,4 +172,5 @@ const Page = () => {
 };
 
 export default Page;
+
 
