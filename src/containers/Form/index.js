@@ -20,7 +20,7 @@ const Form = ({ onSuccess, onError }) => {
       try {
         await mockContactApi();   // Appel simulé de l'API
         setSending(false);        // Remet à false l'état "sending" quand l'appel est terminé
-        // Ici, on ne déclenche pas onSuccess() en cas de succès comme dans la version fonctionnelle de ton pote
+        onSuccess()
       } catch (err) {
         setSending(false);        // Remet l'état "sending" à false en cas d'erreur
         onError(err);              // Appelle la fonction d'erreur (gérée en dehors du composant)
