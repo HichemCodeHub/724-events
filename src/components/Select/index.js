@@ -13,36 +13,46 @@ const Select = ({
   label,
   type = "normal",
 }) => {
+  // Définition d'un état pour la valeur sélectionnée (initialement non définie)
   const [value, setValue] = useState();
+  
+  // Etat pour contrôler l'affichage du menu déroulant (collapsé ou ouvert)
   const [collapsed, setCollapsed] = useState(true);
-
-  // Modification : On passe maintenant la valeur sélectionnée à la fonction onChange
+  
+  // Fonction pour changer la valeur sélectionnée et fermer le menu déroulant
   const changeValue = (newValue) => {
-    onChange(newValue); // Passer la nouvelle valeur sélectionnée à onChange
-    setValue(newValue);
-    setCollapsed(newValue); // Ferme ou ouvre le menu selon la sélection
+    onChange(newValue); // Appel à la fonction onChange passée en prop pour gérer le changement de valeur
+    setValue(newValue); // Mise à jour de l'état de la valeur sélectionnée
+    setCollapsed(true); // On ferme le menu après la sélection
   };
 
   return (
     <div className={`SelectContainer ${type}`} data-testid="select-testid">
+      {/* Affichage du label si fourni */}
       {label && <div className="label">{label}</div>}
+      
       <div className="Select">
         <ul>
+          {/* Affichage du titre du select qui montre la valeur sélectionnée ou "Toutes" */}
           <li className={collapsed ? "SelectTitle--show" : "SelectTitle--hide"}>
             {value || (!titleEmpty && "Toutes")}
           </li>
+          
+          {/* Affichage des options du menu si le menu n'est pas réduit */}
           {!collapsed && (
             <>
+              {/* Option pour réinitialiser la sélection à "Toutes" */}
               {!titleEmpty && (
                 <li onClick={() => changeValue(null)}>
                   <input defaultChecked={!value} name="selected" type="radio" />{" "}
                   Toutes
                 </li>
               )}
+              {/* Affichage de toutes les options de sélection */}
               {selection.map((s) => (
                 <li key={s} onClick={() => changeValue(s)}>
                   <input
-                    defaultChecked={value === s}
+                    defaultChecked={value === s} // coche l'option si elle est égale à la valeur sélectionnée
                     name="selected"
                     type="radio"
                   />{" "}
@@ -52,14 +62,18 @@ const Select = ({
             </>
           )}
         </ul>
+
+        {/* Champ caché qui envoie la valeur du select au formulaire */}
         <input type="hidden" value={value || ""} name={name} />
+        
+        {/* Bouton pour ouvrir/fermer le menu déroulant */}
         <button
           type="button"
           data-testid="collapse-button-testid"
-          className={collapsed ? "open" : "close"}
+          className={collapsed ? "open" : "close"} // Change l'icône de flèche en fonction de l'état
           onClick={(e) => {
-            e.preventDefault();
-            setCollapsed(!collapsed);
+            e.preventDefault(); // Empêche l'action par défaut du bouton
+            setCollapsed(!collapsed); // Inverse l'état du menu déroulant
           }}
         >
           <Arrow />
@@ -69,6 +83,7 @@ const Select = ({
   );
 };
 
+// Composant pour afficher la flèche du menu déroulant
 const Arrow = () => (
   <svg
     width="21"
@@ -84,21 +99,24 @@ const Arrow = () => (
   </svg>
 );
 
+// Validation des props avec PropTypes
 Select.propTypes = {
-  selection: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onChange: PropTypes.func,
-  name: PropTypes.string,
-  titleEmpty: PropTypes.bool,
-  label: PropTypes.string,
-  type: PropTypes.string,
-};
+  selection: PropTypes.arrayOf(PropTypes.string).isRequired, // Liste des options
+  onChange: PropTypes.func, // Fonction de gestion du changement de valeur
+  name: PropTypes.string, // Nom du champ pour l'envoi du formulaire
+  titleEmpty: PropTypes.bool, // Si true, n'affiche pas "Toutes" comme option
+  label: PropTypes.string, // Label du select
+  type: PropTypes.string, // Type de style (normal ou autre)
+}
 
+// Définition des valeurs par défaut pour les props
 Select.defaultProps = {
-  onChange: () => null,
-  titleEmpty: false,
-  label: "",
-  type: "normal",
-  name: "select",
-};
+  onChange: () => null, // Fonction par défaut pour onChange si non fournie
+  titleEmpty: false, // Par défaut, affiche "Toutes"
+  label: "", // Pas de label par défaut
+  type: "normal", // Style par défaut
+  name: "select", // Nom par défaut du champ
+}
 
 export default Select;
+

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Menu from "../../containers/Menu";
 import ServiceCard from "../../components/ServiceCard";
 import EventCard from "../../components/EventCard";
@@ -12,6 +13,7 @@ import Form from "../../containers/Form";
 import Modal from "../../containers/Modal";
 import { useData } from "../../contexts/DataContext";
 
+
 const Page = () => {
   const { data } = useData();
 
@@ -25,6 +27,12 @@ const Page = () => {
 
   // Le dernier événement trié (le plus récent)
   const last = dataTried[0];
+
+  // État pour contrôler l'ouverture du modal et le message de confirmation
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  // État pour le message à afficher dans le modal
+  const [modalMessage, setModalMessage] = useState("");
 
   return (
     <>
@@ -107,18 +115,26 @@ const Page = () => {
         <div className="FormContainer" id="contact">
           <h2 className="Title">Contact</h2>
           <Modal
+            isOpen={modalIsOpen} // Contrôle l'ouverture du modal
             Content={
               <div className="ModalMessage--success">
-                <div>Message envoyé !</div>
-                <p>
-                  Merci pour votre message nous tâcherons de vous répondre dans
-                  les plus brefs délais
-                </p>
+                <div>{modalMessage}</div> {/* Affichage du message personnalisé */}
               </div>
             }
           >
             {({ setIsOpened }) => (
-              <Form onSuccess={() => setIsOpened(true)} onError={() => null} />
+              <Form
+                onSuccess={() => {
+                  setModalMessage("Message envoyé !");
+                  setModalIsOpen(true); // Ouvre le modal avec le message
+                  setIsOpened(true); // Ferme le modal de Form si besoin
+                }}
+                onError={() => {
+                  setModalMessage("Une erreur est survenue, veuillez réessayer.");
+                  setModalIsOpen(true);
+                  setIsOpened(true);
+                }}
+              />
             )}
           </Modal>
         </div>
@@ -172,5 +188,3 @@ const Page = () => {
 };
 
 export default Page;
-
-
