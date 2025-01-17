@@ -44,7 +44,7 @@ const Form = ({ onSuccess, onError }) => {
           />
           <Field placeholder="" label="Email" />
           <Button type={BUTTON_TYPES.SUBMIT} disabled={sending}>
-            {sending ? "En cours" : "Envoyer"} {/* Affiche "En cours" si l'envoi est en cours, sinon "Envoyer" */}
+            {sending ? "En cours" : "Envoyer"}
           </Button>
         </div>
         <div className="col">
