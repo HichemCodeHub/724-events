@@ -125,14 +125,14 @@ const Page = () => {
             {({ setIsOpened }) => (
               <Form
                 onSuccess={() => {
-                  setModalMessage("Message envoyé !");
-                  setModalIsOpen(true); // Ouvre le modal avec le message
-                  setIsOpened(true); // Ferme le modal de Form si besoin
+                  setModalMessage("Message envoyé !"); // Message en cas de succès
+                  setModalIsOpen(true); // Ouvre le modal avec le message de succès
+                  setIsOpened(true); // Ferme le modal du formulaire
                 }}
                 onError={() => {
-                  setModalMessage("Une erreur est survenue, veuillez réessayer.");
-                  setModalIsOpen(true);
-                  setIsOpened(true);
+                  setModalMessage("Une erreur est survenue, veuillez réessayer."); // Message en cas d'erreur
+                  setModalIsOpen(true); // Ouvre le modal avec le message d'erreur
+                  setIsOpened(true); // Ferme le modal du formulaire
                 }}
               />
             )}
@@ -145,11 +145,11 @@ const Page = () => {
           {/* Affichage conditionnel de l'événement le plus récent */}
           {last && last.title && (
             <EventCard
-              imageSrc={last.cover || "/default-image.png"} // Si last.cover est indéfini, une image par défaut sera utilisée
-              title={last.title || "Titre par défaut"} // Si last.title est indéfini, un titre par défaut sera utilisé
+              imageSrc={last.cover || "./images/default-image.png"} // Image par défaut si last.cover est indéfini
+              title={last.title || "Titre par défaut"} // Titre par défaut si last.title est indéfini
               date={new Date(last.date)} // La date de l'événement
               small // Classe pour ajuster la taille de l'image
-              label={last.type || "Type d'événement"} // Utilisation d'un label par défaut si last.type est indéfini
+              label={last.type || "Type d'événement"} // Label par défaut si last.type est indéfini
             />
           )}
         </div>

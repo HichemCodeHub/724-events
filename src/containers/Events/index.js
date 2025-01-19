@@ -13,6 +13,7 @@ const EventList = () => {
   const { data, error } = useData();
   const [type, setType] = useState(); // Le type d'événement sélectionné
   const [currentPage, setCurrentPage] = useState(1); // La page actuelle
+  
   // Filtrage des événements selon le type sélectionné
   const filteredEvents = (
     (!type ? data?.events : data?.events.filter((event) => event.type.trim().toLowerCase() === type.trim().toLowerCase())) || []
@@ -32,8 +33,12 @@ const EventList = () => {
     setType(evtType); // Mettre à jour le type d'événement sélectionné
   };
 
-  const pageNumber = Math.floor((filteredEvents?.length || 0) / PER_PAGE) + 1; // Calcul du nombre total de pages
-  const typeList = new Set(data?.events.map((event) => event.type)); // Créer une liste unique de types d'événements
+  // Calcul du nombre total de pages après filtrage
+  const pageNumber = Math.floor((filteredEvents?.length || 0) / PER_PAGE) + 1; // +1 pour s'assurer que la dernière page soit incluse
+
+  // Créer une liste unique de types d'événements
+  const typeList = new Set(data?.events.map((event) => event.type)); // Génère un Set pour éviter les doublons dans la liste des types
+
   return (
     <>
       {error && <div>An error occured</div>} {/* Afficher une erreur en cas de problème */}
@@ -48,7 +53,7 @@ const EventList = () => {
           />
           <div id="events" className="ListContainer">
             {filteredEvents.map((event) => (
-              <Modal key={event.id} Content={<ModalEvent event={event} />}>
+              <Modal key={event.id} Content={<ModalEvent event={event} />} >
                 {({ setIsOpened }) => (
                   <EventCard
                     onClick={() => setIsOpened(true)} // Ouvrir le modal au clic
@@ -75,6 +80,7 @@ const EventList = () => {
 };
 
 export default EventList;
+
 
 
 

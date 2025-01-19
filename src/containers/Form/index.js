@@ -13,17 +13,17 @@ const Form = ({ onSuccess, onError }) => {
   // Envoi du formulaire
   const sendContact = useCallback(
     async (evt) => {
-      evt.preventDefault();  // Empêche le rechargement de la page
+      evt.preventDefault();  // Empêche le rechargement de la page lors de l'envoi du formulaire
       setSending(true);      // Marque le début de l'envoi des données
 
       // Essaye de simuler l'appel API
       try {
-        await mockContactApi();   // Appel simulé de l'API
+        await mockContactApi();   // Appel simulé de l'API (attend 500ms)
         setSending(false);        // Remet à false l'état "sending" quand l'appel est terminé
-        onSuccess()
+        onSuccess();              // Appelle la fonction de succès, passée en prop
       } catch (err) {
         setSending(false);        // Remet l'état "sending" à false en cas d'erreur
-        onError(err);              // Appelle la fonction d'erreur (gérée en dehors du composant)
+        onError(err);              // Appelle la fonction d'erreur, passée en prop
       }
     },
     [onSuccess, onError]  // Utilisation de onSuccess et onError via useCallback pour éviter les recréations inutiles
@@ -44,7 +44,7 @@ const Form = ({ onSuccess, onError }) => {
           />
           <Field placeholder="" label="Email" />
           <Button type={BUTTON_TYPES.SUBMIT} disabled={sending}>
-            {sending ? "En cours" : "Envoyer"}
+            {sending ? "En cours" : "Envoyer"} 
           </Button>
         </div>
         <div className="col">

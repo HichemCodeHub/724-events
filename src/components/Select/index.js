@@ -21,7 +21,7 @@ const Select = ({
   
   // Fonction pour changer la valeur sélectionnée et fermer le menu déroulant
   const changeValue = (newValue) => {
-    onChange(newValue); // Appel à la fonction onChange passée en prop pour gérer le changement de valeur
+    onChange(newValue); // Cela signifie que la fonction onChange passée en prop n'était appelée sans aucune information sur la nouvelle valeur sélectionnée (newValue) New value pour le bug fix
     setValue(newValue); // Mise à jour de l'état de la valeur sélectionnée
     setCollapsed(true); // On ferme le menu après la sélection
   };
